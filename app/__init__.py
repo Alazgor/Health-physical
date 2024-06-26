@@ -5,23 +5,28 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from config import Config
 
-# Инициализация Flask приложения
-app = Flask(__name__)
-app.config.from_object(Config)
-
-# Инициализация Bootstrap расширения
-bootstrap = Bootstrap(app)
-
-# Инициализация SQLAlchemy
-db = SQLAlchemy(app)
-
-# Инициализация Flask-Migrate
-migrate = Migrate(app, db)
-
-# Инициализация Flask-Login
+db = SQLAlchemy()
+migrate = Migrate()
 login_manager = LoginManager()
-login_manager.login_view = 'login'
-login_manager.init_app(app)
+bootstrap = Bootstrap()
 
-# Импорт маршрутов после инициализации app, db и login_manager
-from app import routes
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object(Config)
+
+    # Инициализация расширений Flask
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login_manager.init_app(app)
+    bootstrap.init_app(app)
+
+    # Регистрация Blueprints
+    from app.routes import main
+    app.register_blueprint(main)
+
+    # Импорт моделей внутри функции create_app() после инициализации db и login_manager
+    from app import models
+
+    return app
+
+

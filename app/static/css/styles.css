@@ -1,0 +1,57 @@
+/* style.css */
+
+body {
+    font-family: 'Arial', sans-serif; /* Установка основного шрифта */
+    background-color: #f0f0f0; /* Светло-серый фон */
+    background-image: url('../img/background.jpg'); /* Фоновый рисунок */
+    background-size: cover; /* Растягиваем фон на всю область */
+    background-position: center center; /* Центрируем фон */
+    background-attachment: fixed; /* Фиксируем фон */
+}
+
+.container {
+    width: 80%; /* Ширина контейнера */
+    margin: 0 auto; /* Выравнивание по центру */
+    text-align: center; /* Выравнивание текста по центру */
+    padding-top: 100px; /* Отступ сверху */
+    color: #ffffff; /* Белый цвет текста */
+}
+
+.main-heading {
+    font-size: 3.5rem; /* Размер заголовка */
+    font-weight: bold; /* Жирный шрифт */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Тень текста */
+}
+
+.subheading {
+    font-size: 1.5rem; /* Размер подзаголовка */
+    margin-bottom: 40px; /* Отступ снизу */
+}
+
+.btn {
+    display: inline-block; /* Блочный элемент */
+    padding: 10px 20px; /* Внутренние отступы */
+    margin: 10px; /* Внешние отступы */
+    text-decoration: none; /* Убираем подчеркивание ссылок */
+    font-size: 1.2rem; /* Размер текста кнопок */
+    border-radius: 5px; /* Скругление углов */
+    cursor: pointer; /* Изменение курсора при наведении */
+}
+
+.btn-login {
+    background-color: #007bff; /* Цвет фона кнопки Login */
+    color: #ffffff; /* Белый цвет текста */
+    border: none; /* Убираем границу */
+}
+
+.btn-register {
+    background-color: #28a745; /* Цвет фона кнопки Register */
+    color: #ffffff; /* Белый цвет текста */
+    border: none; /* Убираем границу */
+}
+
+.btn-logout {
+    background-color: #dc3545; /* Цвет фона кнопки Logout */
+    color: #ffffff; /* Белый цвет текста */
+    border: none; /* Убираем границу */
+}
