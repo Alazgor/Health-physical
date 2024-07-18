@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>Login</h1>
+    <form method="POST" action="{{ url_for('login') }}">
+        {{ form.hidden_tag() }}
+        <p>{{ form.email.label }}<br>{{ form.email(size=32) }}</p>
+
+        <!-- Password field with show/hide functionality -->
+        <div class="password-container">
+            <input type="password" id="password" name="password" required>
+            <input type="checkbox" id="showPassword">
+            <label for="showPassword">Show password</label>
+        </div>
+
+        <p><input type="submit" value="Sign In"></p>
+    </form>
+    <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
+    <p>Forgot your password? <a href="{{ url_for('request_reset_password') }}">Reset Password</a></p>
+</div>
+<script src="{{ url_for('static', filename='js/password_toggle.js') }}"></script>
+</body>
+</html>

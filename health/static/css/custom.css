@@ -1,0 +1,31 @@
+        .password-container {
+            position: relative;
+        }
+
+        .password-container input[type="password"] {
+            width: calc(16% - 93px); /* Adjust width considering checkbox and label */
+            padding-right: 150px; /* Space for checkbox and label */
+            padding-left: -100px;
+        }
+
+        .password-container input[type="checkbox"] {
+            position: absolute;
+            right: 440px; /* Adjust right position */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .password-container label {
+            position: absolute;
+            right: 320px; /* Adjust right position */
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .password-container label[for="password"] {
+            position: absolute;
+            right: 280px; /* Adjust right position */
+            top: 10%;
+            transform: translateY(-50%);
+            margin-bottom: 100px;
+}

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <!-- Connecting styles - styles.css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+    <!-- Connecting custom styles - custom.css -->
+    <script src="{{ url_for('static', filename='js/flash_messages.js') }}"></script>
+    <!-- Connecting a script to manage flash messages -->
+</head>
+<body>
+<div class="container">
+    <h1 class="main-heading">Welcome to Health Tracker</h1>
+    <p class="subheading">This site is built with Python in 2024. The program functions and uses user's personal data.</p>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li class="flash-message">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% if current_user.is_authenticated %}
+        <p>Hello, {{ current_user.first_name }}!</p>
+
+        {% if current_user.is_admin %}
+            <!-- Кнопка для перехода на страницу обновления роли пользователя -->
+            <a href="{{ url_for('update_user_role') }}" class="btn btn-update-role">Update User Role</a>
+            <!-- Кнопка для перехода на страницу админской консоли -->
+            <a href="{{ url_for('admin_console') }}" class="btn btn-admin-console">Admin Console</a>
+        {% endif %}
+
+        <!-- Кнопка для перехода на страницу тренировок -->
+        <a href="{{ url_for('workouts') }}" class="btn btn-workouts">Workouts</a>
+        <!-- Кнопка для перехода на страницу добавления тренировки -->
+        <a href="{{ url_for('add_workout') }}" class="btn btn-add-workout">Add Workout</a>
+        <!-- Кнопка для выхода из системы -->
+        <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+    {% else %}
+        <!-- Кнопка для перехода на страницу входа -->
+        <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+        <!-- Кнопка для перехода на страницу регистрации -->
+        <a href="{{ url_for('register') }}" class="btn btn-register">Register</a>
+    {% endif %}
+
+    <!-- Новая кнопка для перехода на страницу "About Health Tracker" -->
+    <a href="{{ url_for('about') }}" class="btn btn-about">About Health Tracker</a>
+</div>
+</body>
+</html>
+
+
+
+
+

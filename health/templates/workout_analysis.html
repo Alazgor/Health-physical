@@ -1,0 +1,27 @@
+<!-- workout_analysis.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Analysis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Workout Analysis Page</h1>
+
+        <div>
+            <img src="{{ url_for('static', filename='graphs/workouts_per_day.png') }}" alt="Workouts per Day">
+        </div>
+        <div>
+            <img src="{{ url_for('static', filename='graphs/calories_burned.png') }}" alt="Calories Burned">
+        </div>
+
+        <div class="back-to-workouts">
+            <a href="{{ url_for('workouts') }}" class="btn btn-primary">Back to Workouts</a>
+        </div>
+    </div>
+</body>
+</html>

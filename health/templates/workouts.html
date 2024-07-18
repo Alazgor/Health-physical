@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Workouts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>My Workouts</h1>
+
+        {% if workouts %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Workout Type</th>
+                        <th>Duration (minutes)</th>
+                        <th>Calories Burned (kcal)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for workout in workouts %}
+                    <tr>
+                        <td>{{ workout.date }}</td>
+                        <td>{{ workout.workout_type }}</td>
+                        <td>{{ workout.duration }}</td>
+                        <td>{{ workout.calories }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <a href="{{ url_for('export_csv') }}" class="btn btn-primary">Export to CSV</a>
+        {% else %}
+            <p>You have no workouts at the moment. You can start adding them by clicking the button below:</p>
+            <a href="{{ url_for('add_workout') }}" class="btn btn-primary">Add Workout</a>
+        {% endif %}
+        <div class="row mt-4">
+        <div class="col text-center">
+            <a href="{{ url_for('workout_analysis') }}" class="btn btn-primary">View Workout Analysis</a>
+        </div>
+        </div>
+        <div class="back-to-index">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>

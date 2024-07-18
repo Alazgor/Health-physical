@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Workout</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        .form-control {
+            width: 300px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Workout</h1>
+        <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.workout_type.label(class="form-control-label") }}
+                {{ form.workout_type(class="form-control", id="workout_type", onchange="calculateCalories()") }}
+            </div>
+            <div class="form-group">
+                {{ form.duration.label(class="form-control-label") }}
+                {{ form.duration(class="form-control", id="duration", oninput="calculateCalories()") }}
+            </div>
+            <div class="form-group">
+                {{ form.calories.label(class="form-control-label") }}
+                {{ form.calories(class="form-control", id="calories", readonly=True) }} kcal
+            </div>
+            <div class="form-group">
+                <label for="datepicker">Date</label>
+                <input type="text" id="datepicker" name="date" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Workout</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.min.js"></script>
+    <script src="{{ url_for('static', filename='js/calculate_calories.js') }}"></script>
+</body>
+</html>
+<div class="back-to-index">
+    <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+</div>

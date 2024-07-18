@@ -1,0 +1,95 @@
+/* styles.css */
+
+body {
+    font-family: 'Arial', sans-serif; /* Set main font */
+    background-color: #f0f0f0; /* Light gray background */
+    background-image: url('../img/background.jpg'); /* Background image */
+    background-size: cover; /* Cover the entire area */
+    background-position: center center; /* Center the background */
+    background-attachment: fixed; /* Fix the background */
+}
+
+.container {
+    width: 80%; /* Container width */
+    margin: 0 auto; /* Center align */
+    text-align: center; /* Center align text */
+    padding-top: 100px; /* Top padding */
+    color: #ffffff; /* White text color */
+}
+
+.main-heading {
+    font-size: 3.5rem; /* Heading font size */
+    font-weight: bold; /* Bold font */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow */
+}
+
+.subheading {
+    font-size: 1.5rem; /* Subheading font size */
+    margin-bottom: 40px; /* Bottom margin */
+}
+
+.btn {
+    display: inline-block; /* Inline block element */
+    padding: 10px 20px; /* Padding */
+    margin: 10px; /* Margin */
+    text-decoration: none; /* Remove link underline */
+    font-size: 1.2rem; /* Button text size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.btn-login {
+    background-color: #007bff; /* Login button background color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+}
+
+.btn-register {
+    background-color: #28a745; /* Register button background color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+}
+
+.btn-logout {
+    background-color: #dc3545; /* Logout button background color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Button background color on hover */
+}
+.btn-primary {
+    display: inline-block; /* Inline block element */
+    padding: 10px 20px; /* Padding */
+    margin: 10px 20px 10px auto; /* Margin (top, right, bottom, left) */
+    text-decoration: none; /* Remove link underline */
+    font-size: 1.2rem; /* Button text size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    background-color: #007bff; /* Blue button background color */
+    color: #ffffff; /* White text color */
+    border: none; /* Remove border */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Button background color on hover */
+}
+
+.btn-about {
+    display: inline-block; /* Block element */
+    padding: 10px 20px; /* Internal indents */
+    margin: 10px 10px 10px 10px 10px auto; /* External indents (top, right, bottom, left) */
+    text-decoration: none; /* Remove underlining of links */
+    font-size: 1.2rem; /* Button text size */
+    border-radius: 5px; /* Round corners */
+    cursor: pointer; /* Change cursor on hover */
+    background-color: #17a2b8; /* Button background colour */
+    colour: #ffffffff; /* White text colour */
+    border: none; /* Remove border */
+}
+
+.btn-about:hover {
+    background-colour: #117a8b; /* Button background colour on hover */
+}
+

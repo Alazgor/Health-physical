@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Register</h1>
+
+        <!-- Вывод flash сообщений -->
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
+        <form method="post" action="{{ url_for('register') }}">
+            {{ form.hidden_tag() }}
+            <p>First Name<br>{{ form.first_name(size=32) }}</p>
+            <p>Last Name<br>{{ form.last_name(size=32) }}</p>
+            <p>Email<br>{{ form.email(size=32) }}</p>
+            <p>Birth Date<br>
+                <input type="text" id="birth_date" name="birth_date" size="32" placeholder="yyyy.mm.dd">
+            </p>
+            <p>Password<br>
+                <input type="password" id="password" name="password" required>
+            </p>
+            <p>Confirm Password<br>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </p>
+            <p>
+                <input type="checkbox" id="showPassword">
+                <label for="showPassword">Show password</label>
+            </p>
+            <p><input type="submit" value="Register"></p>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+        <p>Forgot your password? <a href="{{ url_for('request_reset_password') }}">Reset Password</a></p>
+        <div class="back-to-index">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/password_toggle.js') }}"></script>
+</body>
+</html>
+
+

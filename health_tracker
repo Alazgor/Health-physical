@@ -1,0 +1,49 @@
+health_tracker/
+│
+├── health/
+│   ├── static/
+│   │   ├── css/styles.css
+│   │   ├── js/password_toggle.js
+│   │   └── img/background.jpg
+│   ├── templates/
+│   │   ├── admin/
+│   │   │   ├── admin_console.html
+│   │   │   ├── dashboard.html
+│   │   │   ├── edit_user.html
+│   │   │   └── update_user_role.html
+│   │   ├── email/
+│   │   │   └── welcome.html
+│   │   ├── about.html
+│   │   ├── add_workout.html
+│   │   ├── base.html
+│   │   ├── console.html
+│   │   ├── dashboard.html
+│   │   ├── index.html
+│   │   ├── login.html
+│   │   ├── register.html
+│   │   ├── reset_password.html
+│   │   ├── reset_password_request.html
+│   │   ├── template.html
+│   │   └── workouts.html
+│   │
+│   ├── __init__.py
+│   ├── data_analysis.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── routes.py
+│   ├── send_mail.py
+│   └── utils.py
+│
+├── venv/
+│   └── (your virtual environment files)
+│
+├── migrations/
+│   └── (database migration scripts managed by Alembic, if using)
+│
+├── .gitignore
+├── admin_script.py
+├── config.py
+├── health_tracker
+├── requirements.txt
+├── run.py
+└── README.md
