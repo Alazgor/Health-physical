@@ -93,3 +93,50 @@ body {
     background-colour: #117a8b; /* Button background colour on hover */
 }
 
+.graph-container {
+    display: flex;
+    flex-wrap: nowrap; /* Графики не переносятся на новую строку */
+    justify-content: space-between; /* Равное расстояние между элементами */
+    align-items: flex-start; /* Выравнивание элементов по верхнему краю */
+    overflow-x: scroll; /* Включаем горизонтальную прокрутку */
+    padding: 20px; /* Внутренние отступы для контейнера */
+    margin: 20px auto; /* Центрирование контейнера с внешними отступами */
+    width: 100%; /* Ширина контейнера занимает 100% */
+}
+
+.graph-item {
+    min-width: 800px; /* Увеличиваем минимальную ширину каждого графика на 30% */
+    margin: 10px 20px; /* Отступы между элементами */
+    padding: 20px; /* Внутренние отступы вокруг содержимого каждого графика */
+    background: #ffffff; /* Фоновый цвет элементов */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Тень для визуального выделения */
+}
+
+.graph-img {
+    width: 100%; /* Изображение занимает всю ширину своего элемента */
+    height: auto; /* Высота изображения адаптируется автоматически */
+}
+
+.recommendations-link {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000; /* Убедитесь, что кнопка будет видна поверх других элементов */
+}
+
+.btn-success {
+    background-color: #28a745; /* Зелёный цвет для кнопки рекомендаций */
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838; /* Немного темнее при наведении */
+}
+
+
+
+
+
+
+
+

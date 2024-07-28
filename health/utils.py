@@ -1,6 +1,7 @@
-from flask import current_app, abort, render_template
+from flask import current_app, abort, render_template, request, redirect, url_for, flash
 from flask_mail import Message
 from functools import wraps
+from flask_login import current_user
 import jwt
 from datetime import datetime, timedelta
 from health import mail
@@ -23,8 +24,11 @@ def get_current_timestamp():
 def admin_required(func):
     @wraps(func)
     def decorated_view(*args, **kwargs):
-        if not current_user.is_admin:
-            abort(403)
+        if not current_user.is_authenticated:
+            return redirect(url_for('login', next=request.url))
+        if not hasattr(current_user, 'is_admin') or not current_user.is_admin:
+            flash('You do not have permission to access this page.', 'danger')
+            return redirect(url_for('index'))
         return func(*args, **kwargs)
     return decorated_view
 
@@ -48,6 +52,6 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         return None  # Invalid token
 
-
 def data_analysis():
     return None
+

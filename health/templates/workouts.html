@@ -6,19 +6,21 @@
     <title>My Workouts</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/workout.js') }}" defer></script>
 </head>
 <body>
     <div class="container">
         <h1>My Workouts</h1>
 
         {% if workouts %}
-            <table class="table table-striped">
+            <table class="table table-striped" id="workoutTable">
                 <thead>
                     <tr>
                         <th>Date</th>
                         <th>Workout Type</th>
                         <th>Duration (minutes)</th>
                         <th>Calories Burned (kcal)</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +30,7 @@
                         <td>{{ workout.workout_type }}</td>
                         <td>{{ workout.duration }}</td>
                         <td>{{ workout.calories }}</td>
+                        <td><button class="btn btn-danger delete-btn">Delete</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -38,9 +41,9 @@
             <a href="{{ url_for('add_workout') }}" class="btn btn-primary">Add Workout</a>
         {% endif %}
         <div class="row mt-4">
-        <div class="col text-center">
-            <a href="{{ url_for('workout_analysis') }}" class="btn btn-primary">View Workout Analysis</a>
-        </div>
+            <div class="col text-center">
+                <a href="{{ url_for('workout_analysis') }}" class="btn btn-primary">View Workout Analysis</a>
+            </div>
         </div>
         <div class="back-to-index">
             <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>

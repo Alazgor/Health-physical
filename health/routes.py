@@ -7,15 +7,18 @@ from health.utils import admin_required, send_email
 from health.send_email import send_password_reset_email
 from io import StringIO
 import csv
-from flask import render_template, send_file
-from health.data_analysis import load_workouts_as_dataframe, plot_workouts_per_day, plot_calories_burned
+from flask import render_template, send_file, request, jsonify
+from health.data_analysis import load_workouts_as_dataframe, plot_workouts_per_day, plot_calories_burned, analyze_workouts
+
 
 @app.route('/', endpoint='index')
 def home():
+    app.logger.info(f'Home page accessed by user: {current_user}')
     return render_template('index.html', current_user=current_user)
 
 @app.route('/about', endpoint='about')
 def about():
+    app.logger.info('About page accessed')
     return render_template('about.html')
 
 @app.route('/login', methods=['GET', 'POST'], endpoint='login')
@@ -30,17 +33,20 @@ def login():
             flash('Invalid email or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember.data)
-        app.logger.info('Login successful!')
+        app.logger.info(f'User {user.email} logged in successfully')
         flash('Login successful!')
         return redirect(url_for('index'))
     return render_template('login.html', form=form)
 
-
-@app.route('/logout', endpoint='logout')
+@app.route('/logout')
 @login_required
 def logout():
-    logout_user()
-    flash('You have been logged out.')
+    if current_user.is_authenticated:
+        app.logger.info(f'User {current_user.email} logged out')
+        logout_user()
+        flash('You have been logged out.')
+    else:
+        flash('No authenticated user.')
     return redirect(url_for('index'))
 
 @app.route('/register', methods=['GET', 'POST'], endpoint='register')
@@ -62,7 +68,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             flash('Congratulations, you are now a registered user!', 'success')
-            app.logger.info('User registered successfully')
+            app.logger.info(f'User {user.email} registered successfully')
             return redirect(url_for('index'))
         except Exception as e:
             db.session.rollback()
@@ -123,6 +129,7 @@ def update_user_role():
 @login_required
 @admin_required
 def admin_console():
+    app.logger.info(f'Admin console accessed by user: {current_user}')
     users = User.query.all()
     return render_template('admin/admin_console.html', users=users)
 
@@ -130,6 +137,7 @@ def admin_console():
 @login_required
 @admin_required
 def admin_dashboard():
+    app.logger.info(f'Admin dashboard accessed by user: {current_user}')
     users = User.query.all()
     return render_template('admin/dashboard.html', users=users)
 
@@ -141,6 +149,7 @@ def promote_to_admin(user_id):
     user.role = 'admin'
     db.session.commit()
     flash(f'{user.email} has been promoted to admin.')
+    app.logger.info(f'User {user.email} promoted to admin by {current_user.email}')
     return redirect(url_for('admin_console'))
 
 @app.route('/admin/delete_user/<int:user_id>', methods=['POST'])
@@ -151,8 +160,8 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
     flash(f'User {user.email} has been deleted.')
+    app.logger.info(f'User {user.email} deleted by {current_user.email}')
     return redirect(url_for('admin_console'))
-
 
 @app.route('/admin/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
@@ -165,15 +174,16 @@ def edit_user(user_id):
         db.session.commit()
         flash('User information has been updated.')
         return redirect(url_for('admin_console'))
+    app.logger.info(f'User {user.email} information edited by {current_user.email}')
     return render_template('admin/edit_user.html', form=form, user=user)
 
 @app.route('/workouts')
 @login_required
 def workouts():
     user_workouts = Workout.query.filter_by(user_id=current_user.id).all()
+    app.logger.info(f'Workouts page accessed by user: {current_user.email}')
     return render_template('workouts.html', workouts=user_workouts)
 
-# calibrated dictionary for excersises
 calories_per_minute = {
     'bench_press': 0.106,
     'squats': 0.095,
@@ -206,6 +216,7 @@ def add_workout():
         db.session.add(workout)
         db.session.commit()
         flash('Workout added successfully!', 'success')
+        app.logger.info(f'Workout added for user: {current_user.email}')
         return redirect(url_for('index'))
     return render_template('add_workout.html', form=form)
 
@@ -213,30 +224,67 @@ def add_workout():
 @login_required
 def export_csv():
     user_workouts = Workout.query.filter_by(user_id=current_user.id).all()
-
     si = StringIO()
     cw = csv.writer(si)
     cw.writerow(['Date', 'Workout Type', 'Duration (minutes)', 'Calories Burned'])
     for workout in user_workouts:
         cw.writerow([workout.date, workout.workout_type, workout.duration, workout.calories])
-
     response = make_response(si.getvalue())
     response.headers['Content-Disposition'] = 'attachment; filename=workouts.csv'
     response.headers['Content-type'] = 'text/csv'
+    app.logger.info(f'CSV export accessed by user: {current_user.email}')
     return response
+
 @app.route('/analytics')
 def analytics():
     df = load_workouts_as_dataframe()
     plot_workouts_per_day(df)
     plot_calories_burned(df)
+    app.logger.info('Analytics page accessed')
     return render_template('analytics.html')
 
 @app.route('/workout_analysis')
 def workout_analysis():
     df = load_workouts_as_dataframe()
-    # Graph generation workouts_per_day
     workouts_per_day_img = plot_workouts_per_day(df)
-    # Graph generation calories_burned
     calories_burned_img = plot_calories_burned(df)
-
+    app.logger.info('Workout analysis page accessed')
     return render_template('workout_analysis.html', workouts_per_day_img=workouts_per_day_img, calories_burned_img=calories_burned_img)
+
+@app.route('/plot_workouts')
+def plot_workouts():
+    df = load_workouts_as_dataframe()
+    img_bytes = plot_workouts_per_day(df)
+    app.logger.info('Workouts plot accessed')
+    return send_file(img_bytes, mimetype='image/png')
+
+@app.route('/plot_calories')
+def plot_calories():
+    df = load_workouts_as_dataframe()
+    img_bytes = plot_calories_burned(df)
+    app.logger.info('Calories plot accessed')
+    return send_file(img_bytes, mimetype='image/png')
+
+@app.route('/delete_workout', methods=['POST'])
+def delete_workout():
+    data = request.get_json()
+    date = data['date']
+    workout_type = data['workout_type']
+    workout = Workout.query.filter_by(date=date, workout_type=workout_type).first()
+    if workout:
+        db.session.delete(workout)
+        db.session.commit()
+        app.logger.info(f'Workout deleted: {date}, {workout_type} by user {current_user.email}')
+        return jsonify({'success': True}), 200
+    else:
+        app.logger.info(f'Workout not found: {date}, {workout_type}')
+        return jsonify({'error': 'Workout not found'}), 404
+
+@app.route('/recommendations')
+def recommendations_view():
+    df = load_workouts_as_dataframe()
+    recommendations = analyze_workouts(df)
+    return render_template('recommendations.html', recommendations=recommendations)
+
+
+

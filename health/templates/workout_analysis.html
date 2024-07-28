@@ -1,5 +1,4 @@
 <!-- workout_analysis.html -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,16 +11,28 @@
     <div class="container">
         <h1>Workout Analysis Page</h1>
 
-        <div>
-            <img src="{{ url_for('static', filename='graphs/workouts_per_day.png') }}" alt="Workouts per Day">
-        </div>
-        <div>
-            <img src="{{ url_for('static', filename='graphs/calories_burned.png') }}" alt="Calories Burned">
+        <div class="graph-container">
+            <div class="graph-item">
+                <img src="{{ url_for('static', filename='graphs/workouts_per_day.png') }}" alt="Workouts per Day" class="graph-img">
+            </div>
+            <div class="graph-item">
+                <img src="{{ url_for('static', filename='graphs/calories_burned.png') }}" alt="Calories Burned" class="graph-img">
+            </div>
         </div>
 
         <div class="back-to-workouts">
             <a href="{{ url_for('workouts') }}" class="btn btn-primary">Back to Workouts</a>
         </div>
+
+        <div style="position: fixed; right: 20px; bottom: 20px;">
+            <a href="{{ url_for('recommendations_view') }}" class="btn btn-info">View Recommendations</a>
+        </div>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
+

@@ -1,0 +1,21 @@
+<!-- recommendations.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Workout Recommendations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Workout Recommendations</h1>
+        <ul>
+            {% for recommendation in recommendations %}
+            <li>{{ recommendation }}</li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+        <a href="{{ url_for('workout_analysis') }}" class="btn btn-secondary">Back to Workout Analysis</a>
+    </div>
+</body>
+</html>
