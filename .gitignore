@@ -1,5 +1,36 @@
-# ignore file .env
-.env
+# Операционные системы
+.DS_Store
+Thumbs.db
 
-# ignore file venv
+# Python
+*.py[cod]
+__pycache__/
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+ENV/
+env/
 venv/
+*.env
+
+# Migrations
+migrations/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# Logs
+*.log
+
