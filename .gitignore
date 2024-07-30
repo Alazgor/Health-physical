@@ -1,36 +1,5 @@
-# Операционные системы
-.DS_Store
-Thumbs.db
-
-# Python
-*.py[cod]
-__pycache__/
-*.so
-*.egg
-*.egg-info/
-dist/
-build/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# Environments
+# ignore file .env
 .env
-.venv
-ENV/
-env/
+
+# ignore file venv
 venv/
-*.env
-
-# Migrations
-migrations/
-
-# VS Code
-.vscode/
-
-# PyCharm
-.idea/
-
-# Logs
-*.log
-

@@ -25,6 +25,9 @@
     <p>Don't have an account? <a href="{{ url_for('register') }}">Register</a></p>
     <p>Forgot your password? <a href="{{ url_for('request_reset_password') }}">Reset Password</a></p>
 </div>
+<div class="back-to-index">
+            <a href="{{ url_for('index') }}" class="btn btn-primary">Back to Home</a>
+        </div>
 <script src="{{ url_for('static', filename='js/password_toggle.js') }}"></script>
 </body>
 </html>

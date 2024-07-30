@@ -7,10 +7,10 @@ function hideFlashMessages() {
         for (var i = 0; i < messages.length; i++) {
             messages[i].style.display = 'none';
         }
-    }, 5000); // Установите время в миллисекундах, через которое сообщения исчезнут (здесь 5000 миллисекунд = 5 секунд)
+    }, 5000); // set up time in millisec, when messages are shows
 }
 
-// Вызываем функцию при загрузке страницы
+// Calling functions when pages are loading
 window.onload = function() {
     hideFlashMessages();
 };
