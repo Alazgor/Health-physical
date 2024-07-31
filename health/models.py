@@ -11,9 +11,11 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(150))
     last_name = db.Column(db.String(150))
-    email = db.Column(db.String(150), unique=True)
-    password_hash = db.Column(db.String(150))
+    email = db.Column(db.String(150), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     birth_date = db.Column(db.Date, nullable=True)
+    secret_question = db.Column(db.String(200), nullable=False)
+    secret_answer_hash = db.Column(db.String(128), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     role = db.Column(db.String(50), default='user')
 
@@ -25,6 +27,12 @@ class User(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    def set_secret_answer(self, answer):
+        self.secret_answer_hash = generate_password_hash(answer)
+
+    def check_secret_answer(self, answer):
+        return check_password_hash(self.secret_answer_hash, answer)
 
     @staticmethod
     def generate_reset_password_token(email, expiration=600):

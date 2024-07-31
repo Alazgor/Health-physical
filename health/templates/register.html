@@ -23,9 +23,9 @@
 
         <form method="post" action="{{ url_for('register') }}">
             {{ form.hidden_tag() }}
-            <p>First Name<br>{{ form.first_name(size=32) }}</p>
-            <p>Last Name<br>{{ form.last_name(size=32) }}</p>
-            <p>Email<br>{{ form.email(size=32) }}</p>
+            <p>First Name<br>{{ form.first_name(size=32, placeholder='Enter your first name') }}</p>
+            <p>Last Name<br>{{ form.last_name(size=32, placeholder='Enter your last name') }}</p>
+            <p>Email<br>{{ form.email(size=32, placeholder='Enter your email') }}</p>
             <p>Birth Date<br>
                 <input type="text" id="birth_date" name="birth_date" size="32" placeholder="yyyy.mm.dd">
             </p>
@@ -35,10 +35,8 @@
             <p>Confirm Password<br>
                 <input type="password" id="confirm_password" name="confirm_password" required>
             </p>
-            <p>
-                <input type="checkbox" id="showPassword">
-                <label for="showPassword">Show password</label>
-            </p>
+            <p>Secret Question<br>{{ form.secret_question(rows=3, placeholder='Your secret question') }}</p>
+            <p>Secret Answer<br>{{ form.secret_answer(size=32, placeholder='Answer to your secret question') }}</p>
             <p><input type="submit" value="Register"></p>
         </form>
         <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
@@ -50,5 +48,8 @@
     <script src="{{ url_for('static', filename='js/password_toggle.js') }}"></script>
 </body>
 </html>
+
+
+
 
 

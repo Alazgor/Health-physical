@@ -1,9 +1,18 @@
 health_tracker/
 │
+├── alembic
+├── db
 ├── health/
 │   ├── static/
-│   │   ├── css/styles.css
+│   │   ├── css/custom.css
+│   │   │   ├── styles2.css
+│   │   │   └── styles.css
+│   │   ├── graphs/calories_burned.png
+│   │   │   └── workouts_per_day.png
 │   │   ├── js/password_toggle.js
+│   │   │   ├── calculate_calories.js
+│   │   │   ├── flash_message.js
+│   │   │   └── workout.js
 │   │   └── img/background.jpg
 │   ├── templates/
 │   │   ├── admin/
@@ -11,8 +20,6 @@ health_tracker/
 │   │   │   ├── dashboard.html
 │   │   │   ├── edit_user.html
 │   │   │   └── update_user_role.html
-│   │   ├── email/
-│   │   │   └── welcome.html
 │   │   ├── about.html
 │   │   ├── add_workout.html
 │   │   ├── base.html
@@ -20,12 +27,18 @@ health_tracker/
 │   │   ├── dashboard.html
 │   │   ├── index.html
 │   │   ├── login.html
+│   │   ├── recommendations.html
 │   │   ├── register.html
 │   │   ├── reset_password.html
 │   │   ├── reset_password_request.html
-│   │   ├── template.html
+│   │   ├── verify_secret.html
+│   │   ├── workout_analysis.html
 │   │   └── workouts.html
-│   │
+│   ├── tests/__init__.py
+│   │   ├── test_integration.py
+│   │   ├── test_models.py
+│   │   ├── test_routes.py
+│   │   └── test_utils.py
 │   ├── __init__.py
 │   ├── data_analysis.py
 │   ├── forms.py
@@ -34,15 +47,21 @@ health_tracker/
 │   ├── send_mail.py
 │   └── utils.py
 │
-├── venv/
-│   └── (your virtual environment files)
-│
+├── Include
+├── Instance
+├── Lib
 ├── migrations/
 │   └── (database migration scripts managed by Alembic, if using)
+├── Scripts
+├── Sessions
+├── share
+├── venv/
+│   └── (your virtual environment files)
 │
 ├── .gitignore
 ├── admin_script.py
 ├── config.py
+├── create_db.py
 ├── health_tracker
 ├── requirements.txt
 ├── run.py

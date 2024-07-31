@@ -1,13 +1,11 @@
-from flask import make_response, flash, redirect, url_for, render_template
+from flask import make_response, flash, redirect, url_for, render_template, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
 from health import app, db
-from health.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, UpdateUserRoleForm, EditUserForm, WorkoutForm
+from health.forms import LoginForm, RegistrationForm, ResetPasswordRequestForm, ResetPasswordForm, UpdateUserRoleForm, EditUserForm, WorkoutForm, VerifySecretForm
 from health.models import User, Workout
-from health.utils import admin_required, send_email
-from health.send_email import send_password_reset_email
+from health.utils import admin_required, generate_token, verify_token
 from io import StringIO
 import csv
-from flask import render_template, send_file, request, jsonify
 from health.data_analysis import load_workouts_as_dataframe, plot_workouts_per_day, plot_calories_burned, analyze_workouts
 
 
@@ -62,9 +60,10 @@ def register():
                 first_name=form.first_name.data,
                 last_name=form.last_name.data,
                 birth_date=form.birth_date.data,
-                is_admin=form.is_admin.data
+                secret_question=form.secret_question.data  # Добавление secret_question
             )
             user.set_password(form.password.data)
+            user.set_secret_answer(form.secret_answer.data)  # Установка секретного ответа
             db.session.add(user)
             db.session.commit()
             flash('Congratulations, you are now a registered user!', 'success')
@@ -82,32 +81,60 @@ def register():
 def request_reset_password():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
+
     form = ResetPasswordRequestForm()
+
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            send_password_reset_email(user)
-            flash('Check your email for the instructions to reset your password.')
+            # Генерация токена и редирект на страницу ввода ответа на секретный вопрос
+            token = generate_token(user.email)
+            return redirect(url_for('verify_secret', token=token))
         else:
-            flash('User not found.')
-        return redirect(url_for('login'))
-    return render_template('reset_password_request.html', title='Reset Password', form=form)
+            flash('User with this email not found.')
+            app.logger.warning(f'User with email {form.email.data} not found')
 
+    return render_template('request_reset_password.html', form=form)
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
 @app.route('/reset_password/<token>', methods=['GET', 'POST'])
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('index'))
-    user = User.verify_reset_password_token(token)
-    if not user:
-        flash('The reset password link is invalid or has expired. Please try again.')
-        return redirect(url_for('login'))
+    email = verify_token(token)
+    if email is None:
+        flash('The reset password link is invalid or has expired.', 'danger')
+        return redirect(url_for('request_reset_password'))
+    user = User.query.filter_by(email=email).first_or_404()
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
-        return redirect(url_for('login'))
-    return render_template('reset_password.html', title='Reset Password', form=form)
+        flash('Your password has been reset. Please log in with your new password.', 'success')
+        return redirect(url_for('index'))
+    return render_template('reset_password.html', form=form, token=token)
+
+
+
+@app.route('/verify_secret/<token>', methods=['GET', 'POST'])
+def verify_secret(token):
+    email = verify_token(token)
+    if email is None:
+        flash('The reset password link is invalid or has expired.')
+        return redirect(url_for('request_reset_password'))
+
+    user = User.query.filter_by(email=email).first_or_404()
+    form = VerifySecretForm(secret_question=user.secret_question)
+
+    if form.validate_on_submit():
+        if user.check_secret_answer(form.secret_answer.data):
+            flash('Verification successful. Please set a new password.')
+            return redirect(url_for('reset_password', token=token))
+        else:
+            flash('Incorrect answer to secret question.')
+
+    return render_template('verify_secret.html', form=form, token=token)
+
 
 @app.route('/admin/update_user_role', methods=['GET', 'POST'])
 @login_required
@@ -163,18 +190,34 @@ def delete_user(user_id):
     app.logger.info(f'User {user.email} deleted by {current_user.email}')
     return redirect(url_for('admin_console'))
 
+
 @app.route('/admin/edit_user/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 @admin_required
 def edit_user(user_id):
     user = User.query.get_or_404(user_id)
     form = EditUserForm(obj=user)
+
     if form.validate_on_submit():
-        form.populate_obj(user)
+        app.logger.info('Form validated successfully.')
+        app.logger.info(f'Form data: {form.data}')
+
+        user.first_name = form.first_name.data
+        user.last_name = form.last_name.data
+        user.email = form.email.data
+        user.birth_date = form.birth_date.data
+        user.role = form.role.data
+
+        # Обновление пароля, если он введен
+        if form.password.data:
+            app.logger.info(f'Updating password for user: {user.email}')
+            user.set_password(form.password.data)
+
         db.session.commit()
         flash('User information has been updated.')
         return redirect(url_for('admin_console'))
-    app.logger.info(f'User {user.email} information edited by {current_user.email}')
+
+    app.logger.info(f'Editing user {user.email}')
     return render_template('admin/edit_user.html', form=form, user=user)
 
 @app.route('/workouts')
@@ -198,6 +241,7 @@ calories_per_minute = {
     'rowing': 0.13,
     'yoga': 0.05
 }
+
 @app.route('/add_workout', methods=['GET', 'POST'])
 @login_required
 def add_workout():
@@ -285,6 +329,7 @@ def recommendations_view():
     df = load_workouts_as_dataframe()
     recommendations = analyze_workouts(df)
     return render_template('recommendations.html', recommendations=recommendations)
+
 
 
 

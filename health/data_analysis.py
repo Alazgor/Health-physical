@@ -29,9 +29,9 @@ def plot_workouts_per_day(df):
         df = df.dropna(subset=['Date'])
         df.set_index('Date', inplace=True)
 
-    # Подсчёт тренировок по дням
-    workouts_per_day = df.resample('D').count()['Workout Type']  # Подсчёт только для дней с тренировками
-    workouts_per_day = workouts_per_day.asfreq('D', fill_value=0)  # Заполнение дней без тренировок нулями
+    # Calculating trainings in a day
+    workouts_per_day = df.resample('D').count()['Workout Type']
+    workouts_per_day = workouts_per_day.asfreq('D', fill_value=0)
 
     plt.figure(figsize=(12, 6))
     workouts_per_day.plot(title='Number of Workouts per Day')
@@ -50,7 +50,7 @@ def plot_calories_burned(df):
         df = df.dropna(subset=['Date'])
         df.set_index('Date', inplace=True)
 
-    # Подсчет суммы калорий по дням
+    # Calculating days calories
     calories_burned = df['Calories Burned'].groupby(df.index.date).sum()
 
     plt.figure(figsize=(15.6, 7.8))

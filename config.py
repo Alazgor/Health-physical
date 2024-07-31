@@ -1,5 +1,6 @@
 import os
 from dotenv import load_dotenv
+from datetime import timedelta
 
 # Loading environment variables from a file .env
 load_dotenv()
@@ -15,13 +16,14 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///C:/Users/aleks/CodeAcademy/health&physical/instance/db.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Config Flask-Mail
-    MAIL_SERVER = 'smtp.gmail.com'
-    MAIL_PORT = 587
-    MAIL_USE_TLS = True
-    MAIL_USE_SSL = False
-    MAIL_USERNAME = 'your-email@gmail.com'
-    MAIL_PASSWORD = 'your-email-password'
-    MAIL_DEFAULT_SENDER = 'your-email@example.com'
-
-
+    # class Config:
+    #     MAIL_SERVER = 'smtp.gmail.com'
+    #     MAIL_PORT = 587
+    #     MAIL_USE_TLS = True
+    #     MAIL_USE_SSL = False
+    #     MAIL_USERNAME = 'aleksejkolpakov88@gmail.com'  # Ваш реальный email
+    #     MAIL_PASSWORD = 'your-app-password'  # Пароль приложений
+    #     MAIL_DEFAULT_SENDER = 'aleksejkolpakov88@gmail.com'
+    #
+    # # Token expiration for security purposes
+    # TOKEN_EXPIRATION = int(timedelta(minutes=30).total_seconds())
